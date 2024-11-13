@@ -5,9 +5,11 @@ import { getAll, toggleBlock } from '../../services/userService';
 import classes from './usersPage.module.css';
 import Title from '../../components/Title/Title';
 import Search from '../../components/Search/Search';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faCheckCircle, faTimesCircle, faEdit, faBan } from '@fortawesome/free-solid-svg-icons';
 
 export default function UsersPage() {
-  const [users, setUsers] = useState();
+  const [users, setUsers] = useState([]);
   const { searchTerm } = useParams();
   const auth = useAuth();
 
@@ -22,7 +24,6 @@ export default function UsersPage() {
 
   const handleToggleBlock = async userId => {
     const isBlocked = await toggleBlock(userId);
-
     setUsers(oldUsers =>
       oldUsers.map(user => (user.id === userId ? { ...user, isBlocked } : user))
     );
@@ -51,11 +52,20 @@ export default function UsersPage() {
               <span>{user.name}</span>
               <span>{user.email}</span>
               <span>{user.address}</span>
-              <span>{user.isAdmin ? '✅' : '❌'}</span>
+              <span className={classes.isAdminIcon}>
+                {user.isAdmin ? (
+                  <FontAwesomeIcon icon={faCheckCircle} color="green" />
+                ) : (
+                  <FontAwesomeIcon icon={faTimesCircle} color="red" />
+                )}
+              </span>
               <span className={classes.actions}>
-                <Link to={'/admin/editUser/' + user.id}>Edit</Link>
+                <Link to={'/admin/editUser/' + user.id}>
+                  <FontAwesomeIcon icon={faEdit} /> Edit
+                </Link>
                 {auth.user.id !== user.id && (
                   <Link onClick={() => handleToggleBlock(user.id)}>
+                    <FontAwesomeIcon icon={faBan} />
                     {user.isBlocked ? 'Unblock' : 'Block'}
                   </Link>
                 )}

@@ -7,6 +7,7 @@ import Title from '../../components/Title/Title';
 import Input from '../../components/Input/Input';
 import Button from '../../components/Button/Button';
 import { EMAIL } from '../../constants/patterns';
+
 export default function LoginPage() {
   const {
     handleSubmit,
@@ -38,25 +39,28 @@ export default function LoginPage() {
             type="email"
             label="Email"
             {...register('email', {
-              required: true,
-              pattern: EMAIL,
+              required: 'Email is required',
+              pattern: {
+                value: EMAIL,
+                message: 'Please enter a valid email address',
+              },
             })}
-            error={errors.email}
+            error={errors.email?.message}
           />
 
           <Input
             type="password"
             label="Password"
             {...register('password', {
-              required: true,
+              required: 'Password is required',
             })}
-            error={errors.password}
+            error={errors.password?.message}
           />
 
           <Button type="submit" text="Login" />
 
           <div className={classes.register}>
-            New user? &nbsp;
+            New user?&nbsp;
             <Link to={`/register${returnUrl ? '?returnUrl=' + returnUrl : ''}`}>
               Register here
             </Link>

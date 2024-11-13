@@ -3,32 +3,6 @@ import { useAuth } from '../../hooks/useAuth';
 import classes from './dashboard.module.css';
 import { Link } from 'react-router-dom';
 
-export default function Dashboard() {
-  const { user } = useAuth();
-
-  return (
-    <div className={classes.container}>
-      <div className={classes.menu}>
-        {allItems
-          .filter(item => user.isAdmin || !item.forAdmin)
-          .map(item => (
-            <Link
-              key={item.title}
-              to={item.url}
-              style={{
-                backgroundColor: item.bgColor,
-                color: item.color,
-              }}
-            >
-              <img src={item.imageUrl} alt={item.title} />
-              <h2>{item.title}</h2>
-            </Link>
-          ))}
-      </div>
-    </div>
-  );
-}
-
 const allItems = [
   {
     title: 'Orders',
@@ -61,3 +35,31 @@ const allItems = [
     color: 'white',
   },
 ];
+
+export default function Dashboard() {
+  const { user } = useAuth();
+
+  const visibleItems = allItems.filter(item => user.isAdmin || !item.forAdmin);
+
+  return (
+    <div className={classes.container}>
+      <div className={classes.menu}>
+        {visibleItems.map(item => (
+          <Link
+            key={item.title}
+            to={item.url}
+            aria-label={`Navigate to ${item.title}`}
+            className={classes.menuItem}
+            style={{
+              backgroundColor: item.bgColor,
+              color: item.color,
+            }}
+          >
+            <img src={item.imageUrl} alt={`${item.title} icon`} />
+            <h2>{item.title}</h2>
+          </Link>
+        ))}
+      </div>
+    </div>
+  );
+}

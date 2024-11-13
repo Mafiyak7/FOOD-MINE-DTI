@@ -1,38 +1,33 @@
 .container {
   display: flex;
+  flex-wrap: wrap;
   justify-content: center;
   align-items: center;
-  flex-wrap: wrap;
   margin: 3rem;
-}
-
-.container > * {
-  min-width: 25rem;
-  max-width: 40rem;
+  gap: 1.5rem;
 }
 
 .image {
-  border-radius: 3rem;
-  flex: 1 0;
+  border-radius: 2rem;
+  flex: 1 1 35rem;
+  max-width: 35rem;
   object-fit: cover;
-  height: 35rem;
+  height: auto;
   margin: 1rem;
 }
 
 .details {
-  width: 100%;
   display: flex;
   flex-direction: column;
-  flex: 1 0;
-  border-radius: 3rem;
+  flex: 1 1 35rem;
   padding: 2rem;
   color: black;
-  margin-left: 1rem;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
+  align-items: center;
 }
 
 .name {
@@ -43,6 +38,7 @@
 .favorite {
   color: #e72929;
   font-size: 2.5rem;
+  cursor: pointer;
 }
 
 .favorite.not {
@@ -52,30 +48,24 @@
 .origins {
   display: flex;
   flex-wrap: wrap;
-  margin: 0.7rem 0;
+  gap: 0.5rem;
+  margin: 1rem 0;
 }
 
 .origins > span {
   padding: 0.5rem;
   font-size: 1.2rem;
-  margin: 0.5rem 0.5rem 0 0;
-  border-radius: 2rem;
   background-color: aliceblue;
+  border-radius: 2rem;
 }
 
 .cook_time {
   margin-top: 1rem;
 }
 
-.cook_time span {
-  padding: 0.6rem 2rem 0.6rem 0;
-  border-radius: 10rem;
-  font-size: 1.3rem;
-}
-
 .price {
   font-size: 1.8rem;
-  margin: 2rem 2rem 2rem 0;
+  margin: 2rem 0;
   color: green;
 }
 
@@ -84,17 +74,33 @@
   color: darkgrey;
 }
 
-.container button {
-  color: white;
+button {
   background-color: #e72929;
-  border: none;
+  color: white;
   font-size: 1.2rem;
   padding: 1rem;
+  border: none;
   border-radius: 10rem;
-  outline: none;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
 }
 
-.container button:hover {
-  opacity: 0.9;
-  cursor: pointer;
+button:hover {
+  background-color: #b02323;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    margin: 2rem 1rem;
+  }
+
+  .details {
+    width: 100%;
+  }
+
+  .image {
+    width: 100%;
+    height: auto;
+  }
 }

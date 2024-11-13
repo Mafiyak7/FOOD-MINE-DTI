@@ -7,8 +7,10 @@ import { useCart } from '../../hooks/useCart';
 import { getById } from '../../services/foodService';
 import classes from './foodPage.module.css';
 import NotFound from '../../components/NotFound/NotFound';
+
 export default function FoodPage() {
-  const [food, setFood] = useState({});
+  const [food, setFood] = useState(null);
+  const [error, setError] = useState(null);
   const { id } = useParams();
   const { addToCart } = useCart();
   const navigate = useNavigate();
@@ -19,64 +21,61 @@ export default function FoodPage() {
   };
 
   useEffect(() => {
-    getById(id).then(setFood);
+    getById(id)
+      .then(setFood)
+      .catch(() => setError('Failed to load food item.'));
   }, [id]);
+
+  if (error) return <NotFound message={error} linkText="Back To Homepage" />;
+  if (!food) return <p>Loading...</p>;
+
   return (
-    <>
-      {!food ? (
-        <NotFound message="Food Not Found!" linkText="Back To Homepage" />
-      ) : (
-        <div className={classes.container}>
-          <img
-            className={classes.image}
-            src={`${food.imageUrl}`}
-            alt={food.name}
-          />
+    <div className={classes.container}>
+      <img
+        className={classes.image}
+        src={`${food.imageUrl}`}
+        alt={food.name}
+      />
 
-          <div className={classes.details}>
-            <div className={classes.header}>
-              <span className={classes.name}>{food.name}</span>
-              <span
-                className={`${classes.favorite} ${
-                  food.favorite ? '' : classes.not
-                }`}
-              >
-                ❤
-              </span>
-            </div>
-            <div className={classes.rating}>
-              <StarRating stars={food.stars} size={25} />
-            </div>
-
-            <div className={classes.origins}>
-              {food.origins?.map(origin => (
-                <span key={origin}>{origin}</span>
-              ))}
-            </div>
-
-            <div className={classes.tags}>
-              {food.tags && (
-                <Tags
-                  tags={food.tags.map(tag => ({ name: tag }))}
-                  forFoodPage={true}
-                />
-              )}
-            </div>
-
-            <div className={classes.cook_time}>
-              <span>
-                Time to cook about <strong>{food.cookTime}</strong> minutes
-              </span>
-            </div>
-
-            <div className={classes.price}>
-              <Price price={food.price} />
-            </div>
-
-            <button onClick={handleAddToCart}>Add To Cart</button>
-          </div>
+      <div className={classes.details}>
+        <div className={classes.header}>
+          <span className={classes.name}>{food.name}</span>
+          <span
+            className={`${classes.favorite} ${food.favorite ? '' : classes.not}`}
+            aria-label={food.favorite ? 'Marked as favorite' : 'Not marked as favorite'}
+          >
+            ❤
+          </span>
         </div>
-      )}
-    </>
+
+        <div className={classes.rating}>
+          <StarRating stars={food.stars} size={25} />
+        </div>
+
+        <div className={classes.origins}>
+          {food.origins?.map(origin => (
+            <span key={origin}>{origin}</span>
+          ))}
+        </div>
+
+        <div className={classes.tags}>
+          {food.tags && <Tags tags={food.tags.map(tag => ({ name: tag }))} forFoodPage />}
+        </div>
+
+        <div className={classes.cook_time}>
+          <span>
+            Time to cook: <strong>{food.cookTime}</strong> minutes
+          </span>
+        </div>
+
+        <div className={classes.price}>
+          <Price price={food.price} />
+        </div>
+
+        <button onClick={handleAddToCart} aria-label="Add to cart">
+          Add To Cart
+        </button>
+      </div>
+    </div>
   );
 }

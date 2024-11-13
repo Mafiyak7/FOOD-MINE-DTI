@@ -51,6 +51,7 @@ export default function CartPage() {
                   <button
                     className={classes.remove_button}
                     onClick={() => removeFromCart(item.food.id)}
+                    style={{ color: 'white' }}
                   >
                     Remove
                   </button>

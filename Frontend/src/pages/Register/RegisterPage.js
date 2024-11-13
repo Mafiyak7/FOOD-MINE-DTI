@@ -41,59 +41,69 @@ export default function RegisterPage() {
             type="text"
             label="Name"
             {...register('name', {
-              required: true,
-              minLength: 5,
+              required: 'Name is required',
+              minLength: {
+                value: 5,
+                message: 'Name must be at least 5 characters long',
+              },
             })}
-            error={errors.name}
+            error={errors.name?.message}
           />
 
           <Input
             type="email"
             label="Email"
             {...register('email', {
-              required: true,
-              pattern: EMAIL,
+              required: 'Email is required',
+              pattern: {
+                value: EMAIL,
+                message: 'Please enter a valid email address',
+              },
             })}
-            error={errors.email}
+            error={errors.email?.message}
           />
 
           <Input
             type="password"
             label="Password"
             {...register('password', {
-              required: true,
-              minLength: 5,
+              required: 'Password is required',
+              minLength: {
+                value: 5,
+                message: 'Password must be at least 5 characters long',
+              },
             })}
-            error={errors.password}
+            error={errors.password?.message}
           />
 
           <Input
             type="password"
             label="Confirm Password"
             {...register('confirmPassword', {
-              required: true,
+              required: 'Please confirm your password',
               validate: value =>
-                value !== getValues('password')
-                  ? 'Passwords Do No Match'
-                  : true,
+                value === getValues('password') || 'Passwords do not match',
             })}
-            error={errors.confirmPassword}
+            error={errors.confirmPassword?.message}
           />
 
           <Input
             type="text"
             label="Address"
             {...register('address', {
-              required: true,
-              minLength: 10,
+              required: 'Address is required',
+              minLength: {
+                value: 10,
+                message: 'Address must be at least 10 characters long',
+              },
             })}
-            error={errors.address}
+            error={errors.address?.message}
           />
 
           <Button type="submit" text="Register" />
 
           <div className={classes.login}>
-            Already a user? &nbsp;
+            Already a user?&nbsp;
             <Link to={`/login${returnUrl ? '?returnUrl=' + returnUrl : ''}`}>
               Login here
             </Link>

@@ -11,42 +11,52 @@ export default function ProfilePage() {
   const {
     handleSubmit,
     register,
-    formState: { errors },
-  } = useForm();
+    formState: { errors, isDirty, isSubmitting },
+  } = useForm({ defaultValues: { name: '', address: '' } });
 
   const { user, updateProfile } = useAuth();
 
-  const submit = user => {
-    updateProfile(user);
+  const submit = async (data) => {
+    try {
+      await updateProfile(data);
+    } catch (error) {
+      console.error('Failed to update profile:', error);
+    }
   };
 
   return (
     <div className={classes.container}>
       <div className={classes.details}>
         <Title title="Update Profile" />
-        <form onSubmit={handleSubmit(submit)}>
+        <form onSubmit={handleSubmit(submit)} noValidate>
           <Input
             defaultValue={user.name}
             type="text"
             label="Name"
             {...register('name', {
-              required: true,
-              minLength: 5,
+              required: 'Name is required',
+              minLength: { value: 5, message: 'Minimum length is 5 characters' },
             })}
-            error={errors.name}
+            error={errors.name?.message}
           />
+
           <Input
             defaultValue={user.address}
             type="text"
             label="Address"
             {...register('address', {
-              required: true,
-              minLength: 10,
+              required: 'Address is required',
+              minLength: { value: 10, message: 'Minimum length is 10 characters' },
             })}
-            error={errors.address}
+            error={errors.address?.message}
           />
 
-          <Button type="submit" text="Update" backgroundColor="#009e84" />
+          <Button 
+            type="submit" 
+            text="Update" 
+            backgroundColor="#009e84" 
+            disabled={!isDirty || isSubmitting} 
+          />
         </form>
 
         <ChangePassword />
