@@ -1,0 +1,57 @@
+.container {
+  margin: auto;
+  margin-top: 1rem;
+  max-width: 70rem;
+  width: 100%;
+  padding: 1rem;
+}
+
+.menu {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.menuItem {
+  width: 22rem;
+  height: 11rem;
+  margin: 1.5rem 2rem;
+  background-color: whitesmoke;
+  box-shadow: 0 0 5px 1px rgba(0, 0, 0, 0.1);
+  border-radius: 1rem;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  color: #444444;
+  text-decoration: none;
+  transition: box-shadow 0.3s ease, transform 0.3s ease;
+}
+
+.menuItem:hover {
+  box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, 0.2);
+  transform: translateY(-2px);
+}
+
+.menuItem img {
+  width: 5rem;
+  height: 5rem;
+}
+
+.menuItem h2 {
+  font-size: 1.8rem;
+  font-weight: 600;
+  margin-right: 1.5rem;
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .menuItem {
+    width: 18rem;
+    height: 9rem;
+    margin: 1rem;
+  }
+
+  .menuItem h2 {
+    font-size: 1.5rem;
+  }
+}
